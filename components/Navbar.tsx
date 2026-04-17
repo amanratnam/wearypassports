@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Compass } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -13,6 +13,33 @@ const navLinks = [
   { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },
 ];
+
+function LogoMark({ size = 36 }: { size?: number }) {
+  const id = `navGrad-${size}`;
+  return (
+    <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Passport stamp outer ring */}
+      <circle cx="18" cy="18" r="16.5" stroke={`url(#${id})`} strokeWidth="1.5" />
+      {/* Dashed inner ring */}
+      <circle cx="18" cy="18" r="12.5" stroke={`url(#${id})`} strokeWidth="0.75" strokeDasharray="2.5 3" opacity="0.5" />
+      {/* Globe: equator curve */}
+      <path d="M7 18 Q12 14 18 18 Q24 22 29 18" stroke="white" strokeWidth="1.6" strokeLinecap="round" />
+      {/* Globe: upper latitude curve */}
+      <path d="M10 12 Q14 9.5 18 11 Q22 9.5 26 12" stroke="white" strokeWidth="1.1" strokeLinecap="round" opacity="0.55" />
+      {/* Globe: central meridian */}
+      <path d="M18 5.5 Q14.5 11 14.5 18 Q14.5 25 18 30.5" stroke="white" strokeWidth="1.1" strokeLinecap="round" opacity="0.55" />
+      <path d="M18 5.5 Q21.5 11 21.5 18 Q21.5 25 18 30.5" stroke="white" strokeWidth="1.1" strokeLinecap="round" opacity="0.55" />
+      {/* North star / pin dot */}
+      <circle cx="18" cy="18" r="1.2" fill={`url(#${id})`} />
+      <defs>
+        <linearGradient id={id} x1="3" y1="3" x2="33" y2="33" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#60A5FA" />
+          <stop offset="1" stopColor="#A78BFA" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -40,13 +67,18 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#2563EB] to-[#7C3AED] flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-105 shadow-[0_0_16px_rgba(37,99,235,0.4)]">
-                <Compass className="w-4 h-4 text-white" strokeWidth={2.5} />
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="transition-transform duration-300 group-hover:scale-105 group-hover:rotate-6 flex-shrink-0">
+                <LogoMark size={34} />
               </div>
-              <span className="font-bold text-white text-sm tracking-tight">
-                Weary Passports
-              </span>
+              <div className="flex flex-col leading-none gap-[2px]">
+                <span className="text-[9px] font-light tracking-[0.38em] uppercase text-white/55 group-hover:text-white/75 transition-colors duration-200">
+                  Weary
+                </span>
+                <span className="text-[13px] font-black text-white tracking-[-0.02em] leading-none group-hover:text-white transition-colors duration-200">
+                  PASSPORTS
+                </span>
+              </div>
             </Link>
 
             {/* Desktop nav */}
@@ -59,7 +91,7 @@ export default function Navbar() {
                     "px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200",
                     pathname === link.href
                       ? "text-white bg-white/10"
-                      : "text-white/45 hover:text-white hover:bg-white/6"
+                      : "text-white/65 hover:text-white hover:bg-white/8"
                   )}
                 >
                   {link.label}
@@ -77,7 +109,7 @@ export default function Navbar() {
             {/* Mobile toggle */}
             <button
               onClick={() => setMobileOpen((v) => !v)}
-              className="md:hidden w-9 h-9 flex items-center justify-center rounded-xl border border-white/12 text-white/60 hover:bg-white/8 hover:text-white transition-all"
+              className="md:hidden w-9 h-9 flex items-center justify-center rounded-xl border border-white/20 text-white/75 hover:bg-white/10 hover:text-white transition-all"
               aria-label="Toggle menu"
             >
               {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -106,15 +138,16 @@ export default function Navbar() {
               className="fixed top-0 right-0 bottom-0 w-72 bg-[#0f0f0f] border-l border-white/8 z-50 md:hidden flex flex-col"
             >
               <div className="flex items-center justify-between p-4 border-b border-white/8">
-                <Link href="/" className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#2563EB] to-[#7C3AED] flex items-center justify-center">
-                    <Compass className="w-3.5 h-3.5 text-white" />
+                <Link href="/" className="flex items-center gap-2.5">
+                  <LogoMark size={30} />
+                  <div className="flex flex-col leading-none gap-[2px]">
+                    <span className="text-[8px] font-light tracking-[0.35em] uppercase text-white/50">Weary</span>
+                    <span className="text-[12px] font-black text-white tracking-[-0.02em] leading-none">PASSPORTS</span>
                   </div>
-                  <span className="font-bold text-white text-sm">Weary Passports</span>
                 </Link>
                 <button
                   onClick={() => setMobileOpen(false)}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg text-white/40 hover:bg-white/8 hover:text-white transition-all"
+                  className="w-8 h-8 flex items-center justify-center rounded-lg text-white/60 hover:bg-white/10 hover:text-white transition-all"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -134,7 +167,7 @@ export default function Navbar() {
                         "flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors",
                         pathname === link.href
                           ? "bg-white/10 text-white"
-                          : "text-white/45 hover:bg-white/6 hover:text-white"
+                          : "text-white/65 hover:bg-white/8 hover:text-white"
                       )}
                     >
                       {link.label}

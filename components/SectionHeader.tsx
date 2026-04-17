@@ -30,7 +30,7 @@ export default function SectionHeader({
     >
       {eyebrow && (
         <div className={cn("mb-4", centered && "flex justify-center")}>
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold tracking-[0.18em] uppercase bg-white/5 text-white/45 border border-white/10">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold tracking-[0.18em] uppercase bg-white/5 text-white/65 border border-white/15">
             {eyebrow}
           </span>
         </div>
@@ -42,7 +42,7 @@ export default function SectionHeader({
         )}
       </h2>
       {description && (
-        <p className="mt-4 text-white/40 text-lg leading-relaxed max-w-2xl mx-auto">
+        <p className="mt-4 text-white/65 text-lg leading-relaxed max-w-2xl mx-auto">
           {description}
         </p>
       )}

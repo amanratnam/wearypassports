@@ -23,7 +23,7 @@ export default function BlogPage() {
             <div className="absolute bottom-0 right-1/4 w-[300px] h-[200px] bg-[#7C3AED]/8 blur-[80px] rounded-full" />
           </div>
           <div className="relative max-w-7xl mx-auto">
-            <p className="text-white/25 text-[10px] font-bold tracking-[0.3em] uppercase mb-6">
+            <p className="text-white/50 text-[10px] font-bold tracking-[0.3em] uppercase mb-6">
               Weary Passports · Travel Writing
             </p>
             <h1 className="text-[12vw] sm:text-[9vw] lg:text-[7vw] font-black text-white leading-[0.88] tracking-[-0.03em] mb-6">
@@ -33,7 +33,7 @@ export default function BlogPage() {
                 STORIES.
               </span>
             </h1>
-            <p className="text-white/40 text-lg max-w-md leading-relaxed">
+            <p className="text-white/65 text-lg max-w-md leading-relaxed">
               Real costs, real routes, real talk — for Indian travelers going
               anywhere from Ladakh to Lisbon.
             </p>

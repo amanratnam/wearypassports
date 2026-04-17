@@ -68,7 +68,7 @@ export default function HomeHowItWorks() {
                 </div>
 
                 <h3 className="font-bold text-white text-base mb-3 tracking-tight">{title}</h3>
-                <p className="text-white/40 text-sm leading-relaxed max-w-xs">{description}</p>
+                <p className="text-white/60 text-sm leading-relaxed max-w-xs">{description}</p>
               </motion.div>
             ))}
           </div>

@@ -47,14 +47,14 @@ export default function PlannerForm({ dark = false, prefilledDestination = "" }:
 
   const inputClass = dark
     ? "input-dark"
-    : "w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder:text-white/25 focus:outline-none focus:ring-1 focus:ring-white/25 focus:border-white/25 transition-all duration-200";
+    : "w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-white/25 focus:border-white/25 transition-all duration-200";
 
   const selectClass = dark
     ? "select-dark"
     : "w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-white/25 focus:border-white/25 transition-all duration-200 appearance-none";
 
-  const labelClass = "block text-xs font-semibold text-white/45 mb-1.5";
-  const iconClass  = "absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25";
+  const labelClass = "block text-xs font-semibold text-white/65 mb-1.5";
+  const iconClass  = "absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/45";
 
   return (
     <motion.div
@@ -76,7 +76,7 @@ export default function PlannerForm({ dark = false, prefilledDestination = "" }:
             </div>
             <div>
               <p className="font-bold text-white text-sm">AI Trip Planner</p>
-              <p className="text-white/30 text-xs">Free · Instant · No signup</p>
+              <p className="text-white/55 text-xs">Free · Instant · No signup</p>
             </div>
           </div>
 

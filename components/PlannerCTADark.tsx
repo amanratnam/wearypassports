@@ -33,7 +33,7 @@ export default function PlannerCTADark() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="text-white/30 text-xs font-bold tracking-[0.2em] uppercase mb-6">
+          <p className="text-white/55 text-xs font-bold tracking-[0.2em] uppercase mb-6">
             AI Trip Planner · Free · Instant
           </p>
           <h2 className="text-5xl sm:text-6xl md:text-7xl font-black text-white leading-[0.92] tracking-tight mb-6">
@@ -43,20 +43,20 @@ export default function PlannerCTADark() {
               going next?
             </span>
           </h2>
-          <p className="text-white/40 text-lg mb-12 max-w-md mx-auto leading-relaxed">
+          <p className="text-white/65 text-lg mb-12 max-w-md mx-auto leading-relaxed">
             Type a destination. Get a full itinerary and budget in 30 seconds.
             No account needed.
           </p>
 
           <form onSubmit={submit} className="relative max-w-lg mx-auto mb-8">
             <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus-within:border-white/30 transition-colors duration-200">
-              <Sparkles className="w-5 h-5 text-white/30 flex-shrink-0" />
+              <Sparkles className="w-5 h-5 text-white/55 flex-shrink-0" />
               <input
                 type="text"
                 placeholder="Try: Bali, Ladakh, Thailand, Paris…"
                 value={destination}
                 onChange={(e) => setDestination(e.target.value)}
-                className="flex-1 bg-transparent text-white text-base placeholder:text-white/25 focus:outline-none"
+                className="flex-1 bg-transparent text-white text-base placeholder:text-white/45 focus:outline-none"
               />
               <motion.button
                 type="submit"
@@ -77,7 +77,7 @@ export default function PlannerCTADark() {
               <button
                 key={s}
                 onClick={() => { setDestination(s); }}
-                className="px-4 py-2 rounded-full border border-white/10 text-white/40 text-xs font-medium hover:border-white/30 hover:text-white/70 transition-all duration-200 hover:scale-105"
+                className="px-4 py-2 rounded-full border border-white/20 text-white/65 text-xs font-medium hover:border-white/40 hover:text-white transition-all duration-200 hover:scale-105"
               >
                 {s}
               </button>
