@@ -54,7 +54,7 @@ export default function CTASection() {
               </Link>
             </div>
 
-            <p className="mt-8 text-white/40 text-sm">
+            <p className="mt-8 text-white/60 text-sm">
               Free to use · Instant results · No account needed
             </p>
           </div>

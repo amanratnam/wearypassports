@@ -36,7 +36,7 @@ export default function Footer() {
               </div>
               <span className="font-bold text-white text-sm">Weary Passports</span>
             </Link>
-            <p className="text-white/35 text-sm leading-relaxed max-w-[200px]">
+            <p className="text-white/55 text-sm leading-relaxed max-w-[200px]">
               AI-powered travel planning for Indian explorers.
             </p>
           </div>
@@ -44,7 +44,7 @@ export default function Footer() {
           {/* Links */}
           {Object.entries(cols).map(([category, links]) => (
             <div key={category}>
-              <h4 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/25 mb-4">
+              <h4 className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/50 mb-4">
                 {category}
               </h4>
               <ul className="space-y-3">
@@ -52,7 +52,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/40 hover:text-white transition-colors duration-200"
+                      className="text-sm text-white/60 hover:text-white transition-colors duration-200"
                     >
                       {link.label}
                     </Link>
@@ -64,10 +64,10 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-white/8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-white/25">
+          <p className="text-sm text-white/50">
             © {new Date().getFullYear()} Weary Passports. All rights reserved.
           </p>
-          <p className="text-xs text-white/15 tracking-wider">
+          <p className="text-xs text-white/35 tracking-wider">
             BUILT FOR TRAVELERS WHO PLAN SMARTER
           </p>
         </div>

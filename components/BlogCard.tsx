@@ -38,7 +38,7 @@ export default function BlogCard({ post, index = 0 }: BlogCardProps) {
 
           {/* Content */}
           <div className="flex-1 flex flex-col p-6">
-            <div className="flex items-center gap-3 text-[10px] text-white/30 font-medium uppercase tracking-wider mb-3">
+            <div className="flex items-center gap-3 text-[10px] text-white/55 font-medium uppercase tracking-wider mb-3">
               <span>{post.date}</span>
               <span>·</span>
               <span className="flex items-center gap-1">
@@ -49,7 +49,7 @@ export default function BlogCard({ post, index = 0 }: BlogCardProps) {
             <h3 className="font-bold text-white text-base leading-snug mb-3 group-hover:text-[#60A5FA] transition-colors duration-200 line-clamp-2 flex-1">
               {post.title}
             </h3>
-            <p className="text-white/40 text-sm leading-relaxed line-clamp-2 mb-5">
+            <p className="text-white/60 text-sm leading-relaxed line-clamp-2 mb-5">
               {post.excerpt}
             </p>
             <div className="flex items-center gap-1 text-[#60A5FA] text-sm font-semibold mt-auto">

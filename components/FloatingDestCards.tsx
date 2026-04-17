@@ -95,7 +95,7 @@ export default function FloatingDestCards() {
   if (!mounted) return null;
 
   return (
-    <div ref={containerRef} className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div ref={containerRef} className="absolute inset-0 overflow-hidden pointer-events-none hidden sm:block">
       {cards.map((card, i) => (
         <CardItem key={card.name} card={card} index={i} smoothX={smoothX} smoothY={smoothY} />
       ))}

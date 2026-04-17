@@ -1,12 +1,31 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import FloatingDestCards from "./FloatingDestCards";
 import { Sparkles, ArrowDown } from "lucide-react";
 
 const words = ["Bali", "Ladakh", "Tokyo", "Goa", "Santorini", "Rajasthan", "Maldives", "Thailand"];
+
+const headlineLines = ["PLAN YOUR", "TRIP TO"];
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.028, delayChildren: 0.2 },
+  },
+};
+
+const charVariants = {
+  hidden: { opacity: 0, y: 22, filter: "blur(4px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
+};
 
 export default function HomeHero() {
   const [wordIdx, setWordIdx] = useState(0);
@@ -27,12 +46,41 @@ export default function HomeHero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen bg-[#080808] flex items-center justify-center overflow-hidden grain-overlay">
-      {/* Ambient light blob */}
-      <div className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] rounded-full bg-[#2563EB]/8 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-5%] right-[15%] w-[400px] h-[400px] rounded-full bg-[#7C3AED]/6 blur-[100px] pointer-events-none" />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden grain-overlay">
+      {/* Background video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0"
+        poster="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80"
+      >
+        <source
+          src="https://videos.pexels.com/video-files/857251/857251-hd_1920_1080_30fps.mp4"
+          type="video/mp4"
+        />
+      </video>
 
-      {/* Floating destination cards */}
+      {/* Dark overlay — preserves readability */}
+      <div className="absolute inset-0 bg-black/65 z-[1]" />
+
+      {/* Brand-tinted gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/40 via-transparent to-[#080808]/80 z-[2] pointer-events-none" />
+
+      {/* Ambient light blobs — pulsing */}
+      <motion.div
+        animate={{ scale: [1, 1.22, 1] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] rounded-full bg-[#2563EB]/10 blur-[120px] pointer-events-none z-[3]"
+      />
+      <motion.div
+        animate={{ scale: [1, 1.16, 1] }}
+        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+        className="absolute bottom-[-5%] right-[15%] w-[400px] h-[400px] rounded-full bg-[#7C3AED]/8 blur-[100px] pointer-events-none z-[3]"
+      />
+
+      {/* Floating destination cards (desktop only) */}
       <FloatingDestCards />
 
       {/* Center content */}
@@ -43,44 +91,62 @@ export default function HomeHero() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="mb-6"
         >
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/50 text-xs font-semibold tracking-widest uppercase">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/8 border border-white/20 text-white/80 text-xs font-semibold tracking-widest uppercase backdrop-blur-sm">
             <Sparkles className="w-3 h-3 text-[#60A5FA]" />
             AI-Powered Travel Planning
           </span>
         </motion.div>
 
-        {/* Main headline */}
+        {/* Main headline — character stagger */}
         <motion.h1
-          initial={{ opacity: 0, y: 32 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
           className="text-[13vw] sm:text-[10vw] lg:text-[8.5vw] font-black text-white leading-[0.88] tracking-[-0.04em] mb-4"
         >
-          PLAN YOUR
+          {headlineLines[0].split("").map((char, i) => (
+            <motion.span
+              key={`l0-${i}`}
+              variants={charVariants}
+              style={{ display: "inline-block", whiteSpace: "pre" }}
+            >
+              {char}
+            </motion.span>
+          ))}
           <br />
-          TRIP TO
+          {headlineLines[1].split("").map((char, i) => (
+            <motion.span
+              key={`l1-${i}`}
+              variants={charVariants}
+              style={{ display: "inline-block", whiteSpace: "pre" }}
+            >
+              {char}
+            </motion.span>
+          ))}
         </motion.h1>
 
-        {/* Rotating destination word */}
-        <div className="h-[1.1em] overflow-hidden mb-8">
-          <motion.div
-            key={wordIdx}
-            initial={{ y: "100%", opacity: 0 }}
-            animate={{ y: "0%", opacity: 1 }}
-            exit={{ y: "-100%", opacity: 0 }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[13vw] sm:text-[10vw] lg:text-[8.5vw] font-black leading-[0.88] tracking-[-0.04em] bg-gradient-to-r from-[#60A5FA] to-[#A78BFA] bg-clip-text text-transparent"
-          >
-            {words[wordIdx].toUpperCase()}
-          </motion.div>
+        {/* Rotating destination word — vw-matched container to prevent clipping */}
+        <div className="overflow-hidden mb-8 h-[13vw] sm:h-[10vw] lg:h-[8.5vw]">
+          <AnimatePresence mode="popLayout">
+            <motion.div
+              key={wordIdx}
+              initial={{ y: "110%", opacity: 0, scale: 0.94 }}
+              animate={{ y: "0%", opacity: 1, scale: 1 }}
+              exit={{ y: "-55%", opacity: 0, scale: 1.04 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[13vw] sm:text-[10vw] lg:text-[8.5vw] font-black leading-[1] tracking-[-0.04em] bg-gradient-to-r from-[#60A5FA] to-[#A78BFA] bg-clip-text text-transparent"
+            >
+              {words[wordIdx].toUpperCase()}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         {/* Subtext */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="text-white/40 text-base sm:text-lg max-w-sm mx-auto leading-relaxed mb-10 pointer-events-auto"
+          transition={{ duration: 0.7, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="text-white/70 text-base sm:text-lg max-w-sm mx-auto leading-relaxed mb-10 pointer-events-auto"
         >
           From the ghats of Varanasi to the beaches of Bali — get a personalized
           AI itinerary in 30 seconds. Free.
@@ -90,19 +156,19 @@ export default function HomeHero() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.6, delay: 0.85, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4 pointer-events-auto"
         >
           <Link
             href="/planner"
-            className="group inline-flex items-center gap-2 px-8 py-4 bg-white text-black text-sm font-bold rounded-2xl hover:bg-white/90 transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] shadow-[0_0_40px_rgba(255,255,255,0.1)]"
+            className="group inline-flex items-center gap-2 px-8 py-4 bg-white text-black text-sm font-bold rounded-2xl hover:bg-white/90 transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] shadow-[0_0_40px_rgba(255,255,255,0.15)] w-full sm:w-auto justify-center"
           >
             <Sparkles className="w-4 h-4" />
             Start Planning — It&apos;s Free
           </Link>
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 px-8 py-4 border border-white/15 text-white/70 text-sm font-semibold rounded-2xl hover:bg-white/5 hover:text-white hover:border-white/30 transition-all duration-200"
+            className="inline-flex items-center gap-2 px-8 py-4 border border-white/30 text-white/85 text-sm font-semibold rounded-2xl hover:bg-white/10 hover:text-white hover:border-white/50 transition-all duration-200 w-full sm:w-auto justify-center backdrop-blur-sm"
           >
             Read travel stories
           </Link>
@@ -114,19 +180,19 @@ export default function HomeHero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: scrolled ? 0 : 1 }}
         transition={{ duration: 0.4 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none z-20"
       >
-        <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/25">Scroll</span>
+        <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/50">Scroll</span>
         <motion.div
           animate={{ y: [0, 6, 0] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
         >
-          <ArrowDown className="w-4 h-4 text-white/25" />
+          <ArrowDown className="w-4 h-4 text-white/50" />
         </motion.div>
       </motion.div>
 
       {/* Bottom gradient fade into next section */}
-      <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-[#080808] to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#080808] to-transparent pointer-events-none z-[5]" />
     </section>
   );
 }

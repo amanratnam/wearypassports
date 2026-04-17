@@ -120,17 +120,17 @@ export default function BlogWriter({ onClose }: Props) {
         className="relative z-[102] min-h-screen flex flex-col max-w-4xl mx-auto px-4 sm:px-6 py-8"
       >
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-[#60A5FA]" />
-              <span className="text-white/50 text-sm font-medium tracking-wide">New Story</span>
+              <span className="hidden sm:block text-white/65 text-sm font-medium tracking-wide">New Story</span>
             </div>
-            <span className="text-white/15">·</span>
+            <span className="hidden sm:block text-white/15">·</span>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="bg-white/5 border border-white/10 text-white/60 text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-white/30 transition-colors"
+              className="bg-white/5 border border-white/10 text-white/70 text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-white/30 transition-colors"
             >
               <option>Budget Travel</option>
               <option>Itineraries</option>
@@ -140,13 +140,13 @@ export default function BlogWriter({ onClose }: Props) {
             </select>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5">
             <button
               onClick={() => setPreview(!preview)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                 preview
                   ? "bg-white/10 text-white border border-white/20"
-                  : "text-white/35 hover:text-white/65"
+                  : "text-white/55 hover:text-white/80 border border-white/10 hover:border-white/25"
               }`}
             >
               {preview ? <Edit3 className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
@@ -158,7 +158,7 @@ export default function BlogWriter({ onClose }: Props) {
               disabled={publishing || published}
               whileHover={!publishing && !published ? { scale: 1.02 } : {}}
               whileTap={!publishing && !published ? { scale: 0.97 } : {}}
-              className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-bold transition-all duration-300 min-w-[100px] justify-center ${
+              className={`flex items-center gap-2 px-4 sm:px-5 py-2 rounded-lg text-sm font-bold transition-all duration-300 min-w-[90px] sm:min-w-[100px] justify-center ${
                 published
                   ? "bg-[#059669] text-white"
                   : publishing
@@ -183,7 +183,7 @@ export default function BlogWriter({ onClose }: Props) {
 
             <button
               onClick={onClose}
-              className="w-9 h-9 flex items-center justify-center rounded-lg text-white/35 hover:text-white hover:bg-white/8 transition-all duration-200"
+              className="w-9 h-9 flex items-center justify-center rounded-lg text-white/55 hover:text-white hover:bg-white/10 transition-all duration-200 border border-white/10 hover:border-white/25"
             >
               <X className="w-4 h-4" />
             </button>
@@ -211,7 +211,7 @@ export default function BlogWriter({ onClose }: Props) {
           placeholder="Give your story a headline worth clicking…"
           value={title}
           onChange={(e) => { setTitle(e.target.value); setError(""); }}
-          className="w-full bg-transparent text-white text-4xl sm:text-5xl font-black placeholder:text-white/12 focus:outline-none tracking-tight leading-tight mb-6 resize-none"
+          className="w-full bg-transparent text-white text-2xl sm:text-4xl md:text-5xl font-black placeholder:text-white/20 focus:outline-none tracking-tight leading-tight mb-6 resize-none"
         />
 
         <div className="h-px bg-white/8 mb-6" />
@@ -231,12 +231,12 @@ export default function BlogWriter({ onClose }: Props) {
                   key={label}
                   onClick={action}
                   title={label}
-                  className="w-8 h-8 flex items-center justify-center rounded text-white/25 hover:text-white/65 hover:bg-white/6 transition-all duration-150"
+                  className="w-8 h-8 flex items-center justify-center rounded text-white/45 hover:text-white/80 hover:bg-white/8 transition-all duration-150"
                 >
                   <Icon className="w-3.5 h-3.5" />
                 </button>
               ))}
-              <div className="ml-3 text-[10px] text-white/12 font-medium tracking-[0.18em] uppercase">
+              <div className="ml-3 text-[10px] text-white/35 font-medium tracking-[0.18em] uppercase">
                 Markdown supported
               </div>
             </div>
@@ -247,7 +247,7 @@ export default function BlogWriter({ onClose }: Props) {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Start writing…"
-              className="flex-1 w-full min-h-[480px] bg-transparent text-white/60 text-base leading-[1.9] placeholder:text-white/12 focus:outline-none resize-none"
+              className="flex-1 w-full min-h-[480px] bg-transparent text-white/75 text-base leading-[1.9] placeholder:text-white/25 focus:outline-none resize-none"
               style={{ fontFamily: "'Inter', ui-monospace, monospace", fontSize: "15px" }}
             />
           </>
@@ -263,10 +263,10 @@ export default function BlogWriter({ onClose }: Props) {
 
         {/* Footer */}
         <div className="mt-8 pt-4 border-t border-white/8 flex items-center justify-between">
-          <p className="text-[11px] text-white/20">
+          <p className="text-[11px] text-white/45">
             {wordCount} words · {Math.max(1, Math.round(wordCount / 200))} min read
           </p>
-          <p className="text-[11px] text-white/20">
+          <p className="text-[11px] text-white/45">
             Stories help fellow Indian travelers plan smarter.
           </p>
         </div>

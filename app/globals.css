@@ -15,8 +15,8 @@
     --accent:   #2563EB;
     --purple:   #7C3AED;
     --text:     #FFFFFF;
-    --text-2:   rgba(255,255,255,0.55);
-    --text-3:   rgba(255,255,255,0.28);
+    --text-2:   rgba(255,255,255,0.72);
+    --text-3:   rgba(255,255,255,0.50);
     --text-4:   rgba(255,255,255,0.14);
   }
 
@@ -51,7 +51,7 @@
     @apply inline-flex items-center gap-2 px-5 py-2.5 bg-[#2563EB] text-white text-sm font-bold rounded-xl transition-all duration-200 hover:bg-[#1d4ed8] hover:scale-[1.02] active:scale-[0.98];
   }
   .btn-ghost {
-    @apply inline-flex items-center gap-2 px-5 py-2.5 border border-white/12 text-white/70 text-sm font-semibold rounded-xl transition-all duration-200 hover:bg-white/6 hover:text-white hover:border-white/25 active:scale-[0.98];
+    @apply inline-flex items-center gap-2 px-5 py-2.5 border border-white/20 text-white/80 text-sm font-semibold rounded-xl transition-all duration-200 hover:bg-white/8 hover:text-white hover:border-white/35 active:scale-[0.98];
   }
   .btn-gradient {
     @apply inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#2563EB] to-[#7C3AED] text-white text-sm font-bold rounded-xl transition-all duration-200 hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] shadow-[0_4px_20px_rgba(37,99,235,0.35)];
@@ -84,7 +84,7 @@
     @apply bg-gradient-to-r from-[#60A5FA] to-[#A78BFA] bg-clip-text text-transparent;
   }
   .label-caps {
-    @apply text-[10px] font-bold tracking-[0.22em] uppercase text-white/30;
+    @apply text-[10px] font-bold tracking-[0.22em] uppercase text-white/50;
   }
 
   /* Inputs */
@@ -97,7 +97,7 @@
 
   /* Badge */
   .badge-dark {
-    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-white/8 text-white/60 border border-white/10;
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-white/8 text-white/70 border border-white/10;
   }
   .badge-accent {
     @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-[#2563EB]/15 text-[#60A5FA] border border-[#2563EB]/20;

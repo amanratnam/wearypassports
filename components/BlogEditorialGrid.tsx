@@ -40,7 +40,7 @@ export default function BlogEditorialGrid({ posts }: Props) {
                 className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
                   activeCategory === cat
                     ? "bg-white text-black"
-                    : "bg-white/5 text-white/45 border border-white/8 hover:bg-white/10 hover:text-white/70"
+                    : "bg-white/5 text-white/65 border border-white/12 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 {cat}
@@ -96,12 +96,12 @@ export default function BlogEditorialGrid({ posts }: Props) {
                         <h2 className="text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight mb-5 group-hover:text-[#60A5FA] transition-colors duration-300">
                           {featured.title}
                         </h2>
-                        <p className="text-white/40 text-base leading-relaxed line-clamp-3 mb-8">
+                        <p className="text-white/60 text-base leading-relaxed line-clamp-3 mb-8">
                           {featured.excerpt}
                         </p>
                       </div>
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-sm text-white/30">
+                        <div className="flex items-center gap-2 text-sm text-white/55">
                           <Clock className="w-3.5 h-3.5" />
                           {featured.readTime}
                         </div>
@@ -175,7 +175,7 @@ function PostCard({ post, index }: { post: BlogPost; index: number }) {
             </span>
           </div>
           <div className="flex-1 flex flex-col p-6">
-            <div className="flex items-center gap-3 text-[10px] text-white/25 font-medium uppercase tracking-wider mb-3">
+            <div className="flex items-center gap-3 text-[10px] text-white/55 font-medium uppercase tracking-wider mb-3">
               <span>{post.date}</span>
               <span>·</span>
               <span className="flex items-center gap-1">
@@ -185,7 +185,7 @@ function PostCard({ post, index }: { post: BlogPost; index: number }) {
             <h3 className="font-bold text-white text-base leading-snug mb-3 group-hover:text-[#60A5FA] transition-colors duration-200 line-clamp-2 flex-1">
               {post.title}
             </h3>
-            <p className="text-white/40 text-sm leading-relaxed line-clamp-2 mb-5">
+            <p className="text-white/60 text-sm leading-relaxed line-clamp-2 mb-5">
               {post.excerpt}
             </p>
             <div className="flex items-center gap-1 text-[#60A5FA] text-sm font-bold mt-auto">

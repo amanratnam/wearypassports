@@ -101,7 +101,7 @@ export default function HomePage() {
             />
             <Link
               href="/blog"
-              className="flex-shrink-0 self-start sm:self-end inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl border border-white/12 text-white/55 text-sm font-semibold hover:border-white/25 hover:text-white/80 transition-all duration-200"
+              className="flex-shrink-0 self-start sm:self-end inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl border border-white/20 text-white/70 text-sm font-semibold hover:border-white/35 hover:text-white transition-all duration-200"
             >
               All articles <ArrowRight className="w-4 h-4" />
             </Link>

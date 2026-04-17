@@ -64,7 +64,7 @@ export default function FeaturesGrid() {
           <h3 className="font-bold text-white text-base mb-2.5 leading-snug group-hover:text-white transition-colors">
             {title}
           </h3>
-          <p className="text-white/40 text-sm leading-relaxed">{description}</p>
+          <p className="text-white/60 text-sm leading-relaxed">{description}</p>
         </motion.div>
       ))}
     </div>
