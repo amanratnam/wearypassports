@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { MapPin, Calendar, Plane, Users, Tag, DollarSign, Sparkles, Loader2 } from "lucide-react";
+import PlacesAutocomplete from "./PlacesAutocomplete";
 
 const tripTypes    = ["leisure", "adventure", "honeymoon", "business", "family", "solo"];
 const currencies   = ["INR (₹)", "USD ($)", "EUR (€)", "GBP (£)", "AED (د.إ)"];
@@ -86,9 +87,14 @@ export default function PlannerForm({ dark = false, prefilledDestination = "" }:
               <label className={labelClass}>Where do you want to go?</label>
               <div className="relative">
                 <MapPin className={iconClass} />
-                <input type="text" placeholder="Bali, Ladakh, Thailand, Japan…"
-                  value={form.destination} onChange={(e) => update("destination", e.target.value)}
-                  required className={`${inputClass} pl-10`} />
+                <PlacesAutocomplete
+                  value={form.destination}
+                  onChange={(v) => update("destination", v)}
+                  placeholder="Bali, Ladakh, Thailand, Japan…"
+                  className={`${inputClass} pl-10`}
+                  types={["(cities)"]}
+                  required
+                />
               </div>
             </div>
 
@@ -119,9 +125,14 @@ export default function PlannerForm({ dark = false, prefilledDestination = "" }:
               <label className={labelClass}>Traveling from</label>
               <div className="relative">
                 <Plane className={iconClass} />
-                <input type="text" placeholder="Delhi, Mumbai, Bangalore…"
-                  value={form.travelFrom} onChange={(e) => update("travelFrom", e.target.value)}
-                  required className={`${inputClass} pl-10`} />
+                <PlacesAutocomplete
+                  value={form.travelFrom}
+                  onChange={(v) => update("travelFrom", v)}
+                  placeholder="Delhi, Mumbai, Bangalore…"
+                  className={`${inputClass} pl-10`}
+                  types={["(cities)"]}
+                  required
+                />
               </div>
             </div>
 

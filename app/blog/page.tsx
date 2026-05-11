@@ -17,31 +17,45 @@ export default function BlogPage() {
       <Navbar />
       <main className="min-h-screen bg-[#080808] pt-16">
         {/* Editorial header */}
-        <section className="relative overflow-hidden bg-[#080808] pt-20 pb-16 px-4 sm:px-6 lg:px-8">
+        <section className="relative overflow-hidden bg-[#080808] pt-24 pb-20 px-4 sm:px-6 lg:px-8">
           <div className="absolute inset-0 pointer-events-none">
             <div
-              className="absolute inset-0 bg-cover bg-center opacity-10"
-              style={{ backgroundImage: "url(https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1600&q=80)" }}
+              className="absolute inset-0 bg-cover bg-center opacity-25"
+              style={{ backgroundImage: "url(https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1600&q=80)" }}
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/60 via-transparent to-[#080808]" />
-            <div className="absolute top-0 left-1/4 w-[400px] h-[300px] bg-[#2563EB]/8 blur-[100px] rounded-full" />
-            <div className="absolute bottom-0 right-1/4 w-[300px] h-[200px] bg-[#7C3AED]/8 blur-[80px] rounded-full" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/75 via-[#080808]/40 to-[#080808]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#080808]/80 via-transparent to-[#080808]/60" />
           </div>
-          <div className="relative max-w-7xl mx-auto">
-            <p className="text-white/50 text-[10px] font-bold tracking-[0.3em] uppercase mb-6">
-              Weary Passports · Travel Writing
-            </p>
-            <h1 className="text-[12vw] sm:text-[9vw] lg:text-[7vw] font-black text-white leading-[0.88] tracking-[-0.03em] mb-6">
-              TRAVEL
-              <br />
-              <span className="bg-gradient-to-r from-[#60A5FA] to-[#A78BFA] bg-clip-text text-transparent">
-                STORIES.
-              </span>
-            </h1>
-            <p className="text-white/65 text-lg max-w-md leading-relaxed">
-              Real costs, real routes, real talk — for Indian travelers going
-              anywhere from Ladakh to Lisbon.
-            </p>
+          <div className="relative max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-end">
+            <div>
+              <p className="text-white/40 text-[10px] font-bold tracking-[0.3em] uppercase mb-6">
+                Weary Passports · Travel Writing
+              </p>
+              <h1 className="text-[13vw] sm:text-[8.5vw] lg:text-[6.5vw] font-black text-white leading-[0.88] tracking-[-0.03em] mb-8">
+                REAL
+                <br />
+                <span className="bg-gradient-to-r from-[#60A5FA] to-[#A78BFA] bg-clip-text text-transparent">
+                  STORIES.
+                </span>
+              </h1>
+              <p className="text-white/65 text-lg max-w-sm leading-relaxed">
+                No fluff. No recycled listicles. Just what it actually costs,
+                feels like, and takes — from travelers who went and came back honest.
+              </p>
+            </div>
+            <div className="hidden md:grid grid-cols-2 gap-3 pb-2">
+              {[
+                { stat: "50+", label: "Destinations" },
+                { stat: "₹0", label: "Paywalled content" },
+                { stat: "100%", label: "Indian traveler POV" },
+                { stat: "Real", label: "Budget breakdowns" },
+              ].map(({ stat, label }) => (
+                <div key={label} className="p-4 rounded-2xl bg-white/4 border border-white/8 backdrop-blur-sm">
+                  <p className="text-2xl font-black text-white mb-0.5">{stat}</p>
+                  <p className="text-xs text-white/40 font-medium">{label}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
