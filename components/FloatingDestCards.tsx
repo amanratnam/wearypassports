@@ -60,15 +60,6 @@ const cards = [
     style: { bottom: "8%", right: "3%", rotate: -5 },
     delay: 0.05,
   },
-  {
-    name: "Thailand",
-    country: "Southeast Asia",
-    img: "https://images.unsplash.com/photo-1528181304800-259b08848526?w=600&q=80",
-    cost: "₹55K",
-    tag: "6 days",
-    style: { bottom: "30%", left: "50%", rotate: 3 },
-    delay: 0.3,
-  },
 ];
 
 export default function FloatingDestCards() {

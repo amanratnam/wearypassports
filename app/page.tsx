@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import FloatingDestCards from "@/components/FloatingDestCards";
 import MarqueeStrip from "@/components/MarqueeStrip";
 import ParallaxSection from "@/components/ParallaxSection";
 import DestinationDeck from "@/components/DestinationDeck";
@@ -36,7 +35,7 @@ export default function HomePage() {
 
       {/* ── PARALLAX 1: India ── */}
       <ParallaxSection
-        image="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1600&q=80"
+        image="https://images.unsplash.com/photo-1561361058-c27e59f2b6a4?w=1600&q=80"
         eyebrow="Incredible India"
         headline={"48 hours<br/>in Varanasi."}
         subtext="Ancient ghats, morning aarti, street food on every corner. India's most spiritual city doesn't need a planner. But a budget breakdown helps."
@@ -63,7 +62,7 @@ export default function HomePage() {
 
       {/* ── PARALLAX 3: Mountains ── */}
       <ParallaxSection
-        image="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1600&q=80"
+        image="https://images.unsplash.com/photo-1584182741570-4e63a1f59b08?w=1600&q=80"
         eyebrow="Roof of the World"
         headline={"Ladakh.<br/>No filter needed."}
         subtext="The highest motorable passes. Blue lakes that look fake. Monasteries on clifftops. ₹22,000 from Delhi. The trip that changes how you see India."
@@ -77,7 +76,7 @@ export default function HomePage() {
       <PlannerCTADark />
 
       {/* ── FEATURES ── */}
-      <section className="section-padding bg-[#080808] border-t border-white/5">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-[#080808] border-t border-white/5">
         <div className="container-max">
           <SectionHeader
             eyebrow="What you get"
@@ -89,7 +88,7 @@ export default function HomePage() {
       </section>
 
       {/* ── BLOG PREVIEW ── */}
-      <section className="section-padding bg-[#0a0a0a] border-t border-white/5">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-[#0a0a0a] border-t border-white/5">
         <div className="container-max">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-12 gap-4">
             <SectionHeader
