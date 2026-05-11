@@ -34,11 +34,19 @@ function PlannerContent() {
     <main className="min-h-screen bg-[#080808] pt-16">
       {/* Hero */}
       <section className="relative overflow-hidden py-20 px-4 sm:px-6 lg:px-8">
+        {/* Background image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center z-0"
+          style={{
+            backgroundImage: "url(https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&q=80)",
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/85 via-[#080808]/70 to-[#080808] z-[1]" />
         {/* Ambient */}
-        <div className="absolute -top-32 left-1/4 w-[500px] h-[500px] rounded-full bg-[#2563EB]/7 blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full bg-[#7C3AED]/5 blur-[100px] pointer-events-none" />
+        <div className="absolute -top-32 left-1/4 w-[500px] h-[500px] rounded-full bg-[#2563EB]/7 blur-[120px] pointer-events-none z-[2]" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full bg-[#7C3AED]/5 blur-[100px] pointer-events-none z-[2]" />
 
-        <div className="relative max-w-7xl mx-auto">
+        <div className="relative max-w-7xl mx-auto z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             {/* Left */}
             <motion.div

@@ -26,8 +26,13 @@ export default function ContactPage() {
 
         {/* Hero */}
         <section className="relative overflow-hidden py-24 px-4 sm:px-6 lg:px-8 border-b border-white/6">
-          <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-gradient-to-b from-[#7C3AED]/10 to-transparent blur-3xl pointer-events-none" />
-          <div className="relative max-w-3xl mx-auto text-center">
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-8"
+            style={{ backgroundImage: "url(https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600&q=80)" }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/70 via-[#080808]/50 to-[#080808]" />
+          <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-gradient-to-b from-[#7C3AED]/12 to-transparent blur-3xl pointer-events-none" />
+          <div className="relative z-10 max-w-3xl mx-auto text-center">
             <motion.p
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import FloatingDestCards from "./FloatingDestCards";
 import { Sparkles, ArrowDown } from "lucide-react";
@@ -31,6 +31,17 @@ export default function HomeHero() {
   const [wordIdx, setWordIdx] = useState(0);
   const [scrolled, setScrolled] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.18]);
+  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
@@ -46,29 +57,40 @@ export default function HomeHero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden grain-overlay">
-      {/* Background video */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover z-0"
-        poster="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80"
+    <section
+      ref={sectionRef}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden grain-overlay"
+    >
+      {/* Background video — parallax zoom on scroll */}
+      <motion.div
+        className="absolute inset-0 z-0"
+        style={{ scale: videoScale, y: videoY, willChange: "transform" }}
       >
-        <source
-          src="https://videos.pexels.com/video-files/857251/857251-hd_1920_1080_30fps.mp4"
-          type="video/mp4"
-        />
-      </video>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          poster="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80"
+        >
+          <source
+            src="https://videos.pexels.com/video-files/2169880/2169880-hd_1920_1080_30fps.mp4"
+            type="video/mp4"
+          />
+          <source
+            src="https://videos.pexels.com/video-files/857251/857251-hd_1920_1080_30fps.mp4"
+            type="video/mp4"
+          />
+        </video>
+      </motion.div>
 
-      {/* Dark overlay — preserves readability */}
-      <div className="absolute inset-0 bg-black/65 z-[1]" />
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/60 z-[1]" />
+      {/* Brand gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/30 via-transparent to-[#080808]/85 z-[2] pointer-events-none" />
 
-      {/* Brand-tinted gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/40 via-transparent to-[#080808]/80 z-[2] pointer-events-none" />
-
-      {/* Ambient light blobs — pulsing */}
+      {/* Ambient light blobs */}
       <motion.div
         animate={{ scale: [1, 1.22, 1] }}
         transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
@@ -83,8 +105,12 @@ export default function HomeHero() {
       {/* Floating destination cards (desktop only) */}
       <FloatingDestCards />
 
-      {/* Center content */}
-      <div className="relative z-20 text-center px-4 max-w-4xl mx-auto pointer-events-none select-none">
+      {/* Center content — scrolls up and fades on scroll */}
+      <motion.div
+        style={{ y: contentY, opacity: contentOpacity }}
+        className="relative z-20 text-center px-6 w-full max-w-5xl mx-auto pointer-events-none select-none"
+      >
+        {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -93,7 +119,7 @@ export default function HomeHero() {
         >
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/8 border border-white/20 text-white/80 text-xs font-semibold tracking-widest uppercase backdrop-blur-sm">
             <Sparkles className="w-3 h-3 text-[#60A5FA]" />
-            AI-Powered Travel Planning
+            Trip plans that do not get cancelled
           </span>
         </motion.div>
 
@@ -125,7 +151,7 @@ export default function HomeHero() {
           ))}
         </motion.h1>
 
-        {/* Rotating destination word — vw-matched container to prevent clipping */}
+        {/* Rotating destination word */}
         <div className="overflow-hidden mb-8 h-[13vw] sm:h-[10vw] lg:h-[8.5vw]">
           <AnimatePresence mode="popLayout">
             <motion.div
@@ -141,15 +167,14 @@ export default function HomeHero() {
           </AnimatePresence>
         </div>
 
-        {/* Subtext */}
+        {/* Subtext — personal, direct */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="text-white/70 text-base sm:text-lg max-w-sm mx-auto leading-relaxed mb-10 pointer-events-auto"
         >
-          From the ghats of Varanasi to the beaches of Bali — get a personalized
-          AI itinerary in 30 seconds. Free.
+          Tell me where you want to go. I&apos;ll give you a full itinerary, real budget, and local tips — in 30 seconds.
         </motion.p>
 
         {/* CTAs */}
@@ -173,7 +198,7 @@ export default function HomeHero() {
             Read travel stories
           </Link>
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* Scroll hint */}
       <motion.div

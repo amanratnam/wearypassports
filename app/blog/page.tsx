@@ -19,6 +19,11 @@ export default function BlogPage() {
         {/* Editorial header */}
         <section className="relative overflow-hidden bg-[#080808] pt-20 pb-16 px-4 sm:px-6 lg:px-8">
           <div className="absolute inset-0 pointer-events-none">
+            <div
+              className="absolute inset-0 bg-cover bg-center opacity-10"
+              style={{ backgroundImage: "url(https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1600&q=80)" }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/60 via-transparent to-[#080808]" />
             <div className="absolute top-0 left-1/4 w-[400px] h-[300px] bg-[#2563EB]/8 blur-[100px] rounded-full" />
             <div className="absolute bottom-0 right-1/4 w-[300px] h-[200px] bg-[#7C3AED]/8 blur-[80px] rounded-full" />
           </div>
