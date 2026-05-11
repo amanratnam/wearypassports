@@ -50,7 +50,7 @@ const deckItems = [
   {
     name: "Ladakh",
     country: "India",
-    image: "https://images.unsplash.com/photo-1584182741570-4e63a1f59b08?w=900&q=80",
+    image: "https://images.unsplash.com/photo-1652204597589-962156b9483d?w=900&q=80",
     tagline: "The roof of the world. Every view is a painting.",
     cost: "₹22,000",
     days: "9–12 days",

@@ -10,6 +10,38 @@ interface Props {
   onClose: () => void;
 }
 
+const RATE_KEY = "wp_publish_times";
+const RATE_LIMIT = 3;     // max posts
+const RATE_WINDOW = 24 * 60 * 60 * 1000; // per 24h
+
+function getRateLimitStatus(): { allowed: boolean; remaining: number; resetIn: string } {
+  if (typeof window === "undefined") return { allowed: true, remaining: RATE_LIMIT, resetIn: "" };
+  try {
+    const raw = localStorage.getItem(RATE_KEY);
+    const times: number[] = raw ? JSON.parse(raw) : [];
+    const now = Date.now();
+    const recent = times.filter((t) => now - t < RATE_WINDOW);
+    const remaining = Math.max(0, RATE_LIMIT - recent.length);
+    const oldest = recent[0];
+    const resetIn = oldest
+      ? `${Math.ceil((oldest + RATE_WINDOW - now) / 3600000)}h`
+      : "";
+    return { allowed: remaining > 0, remaining, resetIn };
+  } catch {
+    return { allowed: true, remaining: RATE_LIMIT, resetIn: "" };
+  }
+}
+
+function recordPublish() {
+  if (typeof window === "undefined") return;
+  try {
+    const raw = localStorage.getItem(RATE_KEY);
+    const times: number[] = raw ? JSON.parse(raw) : [];
+    times.push(Date.now());
+    localStorage.setItem(RATE_KEY, JSON.stringify(times.slice(-50)));
+  } catch { /* ignore */ }
+}
+
 const placeholderContent = `## Start with a hook
 
 Write the opening line that makes someone stop scrolling. One sentence. Make it land.
@@ -50,11 +82,17 @@ export default function BlogWriter({ onClose }: Props) {
       setError("Write a bit more before publishing — at least 100 characters.");
       return;
     }
+    const { allowed, remaining, resetIn } = getRateLimitStatus();
+    if (!allowed) {
+      setError(`You've hit the daily publish limit (${RATE_LIMIT} stories/24h). Try again in ${resetIn}.`);
+      return;
+    }
     setError("");
     setPublishing(true);
 
-    // Small artificial delay so publish feels intentional
     await new Promise((r) => setTimeout(r, 700));
+
+    recordPublish();
 
     const slug = slugify(title);
     const wordCount = content.trim().split(/\s+/).length;
@@ -267,7 +305,7 @@ export default function BlogWriter({ onClose }: Props) {
             {wordCount} words · {Math.max(1, Math.round(wordCount / 200))} min read
           </p>
           <p className="text-[11px] text-white/45">
-            Stories help fellow Indian travelers plan smarter.
+            {(() => { const { remaining } = getRateLimitStatus(); return `${remaining} of ${RATE_LIMIT} daily publishes remaining`; })()}
           </p>
         </div>
       </motion.div>

@@ -35,7 +35,7 @@ export default function HomePage() {
 
       {/* ── PARALLAX 1: India ── */}
       <ParallaxSection
-        image="https://images.unsplash.com/photo-1561361058-c27e59f2b6a4?w=1600&q=80"
+        image="https://images.unsplash.com/photo-1706186839147-0d708602587b?w=1600&q=80"
         eyebrow="Incredible India"
         headline={"48 hours<br/>in Varanasi."}
         subtext="Ancient ghats, morning aarti, street food on every corner. India's most spiritual city doesn't need a planner. But a budget breakdown helps."
@@ -62,7 +62,7 @@ export default function HomePage() {
 
       {/* ── PARALLAX 3: Mountains ── */}
       <ParallaxSection
-        image="https://images.unsplash.com/photo-1584182741570-4e63a1f59b08?w=1600&q=80"
+        image="https://images.unsplash.com/photo-1652204597589-962156b9483d?w=1600&q=80"
         eyebrow="Roof of the World"
         headline={"Ladakh.<br/>No filter needed."}
         subtext="The highest motorable passes. Blue lakes that look fake. Monasteries on clifftops. ₹22,000 from Delhi. The trip that changes how you see India."
