@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -29,7 +29,7 @@
   }
 
   body {
-    font-family: "Inter", system-ui, sans-serif;
+    font-family: "Outfit", "Inter", system-ui, sans-serif;
     background-color: #080808;
     color: #ffffff;
     line-height: 1.6;
@@ -68,18 +68,28 @@
     @apply bg-[#161616] border border-white/10 rounded-2xl p-6 transition-all duration-300;
   }
 
-  /* Layout */
+  /* Layout — fluid containers */
   .section-padding {
-    @apply py-24 px-4 sm:px-6 lg:px-8;
+    @apply py-24;
+    padding-left: clamp(1rem, 4vw, 4rem);
+    padding-right: clamp(1rem, 4vw, 4rem);
   }
   .section-dark {
-    @apply py-20 px-4 sm:px-6 lg:px-8 bg-[#080808];
+    @apply py-20 bg-[#080808];
+    padding-left: clamp(1rem, 4vw, 4rem);
+    padding-right: clamp(1rem, 4vw, 4rem);
   }
   .section-surface {
-    @apply py-20 px-4 sm:px-6 lg:px-8 bg-[#0f0f0f];
+    @apply py-20 bg-[#0f0f0f];
+    padding-left: clamp(1rem, 4vw, 4rem);
+    padding-right: clamp(1rem, 4vw, 4rem);
   }
+  /* Fluid container: fits 13" MacBook to 32" monitor */
   .container-max {
-    @apply max-w-7xl mx-auto;
+    width: 100%;
+    max-width: min(90rem, 92vw);
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* Typography */
@@ -156,6 +166,13 @@
 .prose-dark td { padding:0.75rem 1rem; color:rgba(255,255,255,0.55); border-bottom:1px solid rgba(255,255,255,0.05); }
 .prose-dark strong { font-weight:700; color:#fff; }
 .prose-dark a { color:#60A5FA; text-decoration:underline; text-underline-offset:3px; }
+
+/* Fluid typography — scales from 13" (1280px) to 32" (2560px) */
+.fluid-hero  { font-size: clamp(2.5rem, 7vw, 7rem);  }
+.fluid-h1    { font-size: clamp(2rem, 4.5vw, 5rem);  }
+.fluid-h2    { font-size: clamp(1.5rem, 3vw, 3.5rem);}
+.fluid-body  { font-size: clamp(0.9rem, 1.1vw, 1.125rem); }
+.fluid-small { font-size: clamp(0.75rem, 0.9vw, 0.9rem); }
 
 /* Glow effects */
 .glow-blue  { box-shadow: 0 0 60px rgba(37,99,235,0.2); }

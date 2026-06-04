@@ -3,30 +3,54 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { MapPin, Calendar, Plane, Users, Tag, DollarSign, Sparkles, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import PlacesAutocomplete from "./PlacesAutocomplete";
 
 const tripTypes    = ["leisure", "adventure", "honeymoon", "business", "family", "solo"];
-const currencies   = ["INR (₹)", "USD ($)", "EUR (€)", "GBP (£)", "AED (د.إ)"];
 const budgetStyles = ["budget", "mid-range", "luxury"];
+const currencies   = [
+  { label: "₹ INR", value: "INR" },
+  { label: "$ USD", value: "USD" },
+  { label: "€ EUR", value: "EUR" },
+  { label: "£ GBP", value: "GBP" },
+  { label: "AED", value: "AED" },
+];
 
 interface Props {
   dark?: boolean;
   prefilledDestination?: string;
 }
 
-export default function PlannerForm({ dark = false, prefilledDestination = "" }: Props) {
+/* Shared styles for inline form elements */
+const inlineInput = `
+  bg-transparent border-b-2 border-[#2563EB]/60 text-white font-semibold
+  placeholder:text-white/25 focus:outline-none focus:border-[#60A5FA]
+  transition-colors duration-200 text-base leading-tight
+  min-w-0 w-auto
+`.replace(/\n/g, " ").trim();
+
+const inlineSelect = `
+  bg-transparent border-b-2 border-[#2563EB]/60 text-white font-semibold
+  focus:outline-none focus:border-[#60A5FA] transition-colors duration-200
+  appearance-none cursor-pointer text-base leading-tight
+  pr-4 bg-[length:10px_6px]
+`.replace(/\n/g, " ").trim();
+
+export default function PlannerForm({ prefilledDestination = "" }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
-    destination: prefilledDestination,
-    days: "5",
-    travelFrom: "",
-    travelers: "2",
-    tripType: "leisure",
-    currency: "INR (₹)",
-    budgetStyle: "mid-range",
+    destination:  prefilledDestination,
+    travelFrom:   "",
+    days:         "5",
+    travelers:    "2",
+    tripType:     "leisure",
+    budgetStyle:  "mid-range",
+    nationality:  "Indian",
+    currency:     "INR",
   });
+
+  const set = (k: string, v: string) => setForm(p => ({ ...p, [k]: v }));
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,162 +58,132 @@ export default function PlannerForm({ dark = false, prefilledDestination = "" }:
     setLoading(true);
     const p = new URLSearchParams({
       destination: form.destination,
-      days: form.days,
-      travelFrom: form.travelFrom,
-      travelers: form.travelers,
-      tripType: form.tripType,
-      currency: form.currency.split(" ")[0],
+      days:        form.days,
+      travelFrom:  form.travelFrom,
+      travelers:   form.travelers,
+      tripType:    form.tripType,
+      currency:    form.currency,
       budgetStyle: form.budgetStyle,
     });
-    setTimeout(() => router.push(`/result?${p.toString()}`), 1000);
+    setTimeout(() => router.push(`/result?${p.toString()}`), 900);
   };
 
-  const update = (k: string, v: string) => setForm((p) => ({ ...p, [k]: v }));
-
-  const inputClass = dark
-    ? "input-dark"
-    : "w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-white/25 focus:border-white/25 transition-all duration-200";
-
-  const selectClass = dark
-    ? "select-dark"
-    : "w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-white/25 focus:border-white/25 transition-all duration-200 appearance-none";
-
-  const labelClass = "block text-xs font-semibold text-white/65 mb-1.5";
-  const iconClass  = "absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/45";
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 24, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="relative"
-    >
-      <div className="relative bg-[#111111] border border-white/10 rounded-3xl p-7 shadow-[0_0_60px_rgba(0,0,0,0.5)] overflow-hidden">
-        {/* Glow corners */}
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#2563EB]/8 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-[#7C3AED]/8 rounded-full blur-3xl pointer-events-none" />
+    <form onSubmit={handleSubmit} className="w-full">
+      {/* Sentences */}
+      <div className="space-y-5 text-[1.05rem] leading-[2.2] text-white/70 font-medium">
 
-        <div className="relative z-10">
-          {/* Header */}
-          <div className="flex items-center gap-3 mb-7">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#2563EB] to-[#7C3AED] flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.4)]">
-              <Sparkles className="w-4 h-4 text-white" />
-            </div>
-            <div>
-              <p className="font-bold text-white text-sm">AI Trip Planner</p>
-              <p className="text-white/55 text-xs">Free · Instant · No signup</p>
-            </div>
-          </div>
+        {/* Line 1 */}
+        <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+          <span>I&apos;m planning a trip to</span>
+          <PlacesAutocomplete
+            value={form.destination}
+            onChange={v => set("destination", v)}
+            placeholder="Bali, Ladakh, Japan…"
+            className={`${inlineInput} w-[160px] sm:w-[180px]`}
+            types={["(cities)"]}
+            required
+          />
+          <span>from</span>
+          <PlacesAutocomplete
+            value={form.travelFrom}
+            onChange={v => set("travelFrom", v)}
+            placeholder="Delhi, Mumbai…"
+            className={`${inlineInput} w-[150px] sm:w-[170px]`}
+            types={["(cities)"]}
+            required
+          />
+          <span>.</span>
+        </p>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Destination */}
-            <div>
-              <label className={labelClass}>Where do you want to go?</label>
-              <div className="relative">
-                <MapPin className={iconClass} />
-                <PlacesAutocomplete
-                  value={form.destination}
-                  onChange={(v) => update("destination", v)}
-                  placeholder="Bali, Ladakh, Thailand, Japan…"
-                  className={`${inputClass} pl-10`}
-                  types={["(cities)"]}
-                  required
-                />
-              </div>
-            </div>
+        {/* Line 2 */}
+        <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+          <span>The trip will be</span>
+          <input
+            type="number" min="1" max="30"
+            value={form.days}
+            onChange={e => set("days", e.target.value)}
+            className={`${inlineInput} w-14 text-center`}
+          />
+          <span>days long with</span>
+          <input
+            type="number" min="1" max="20"
+            value={form.travelers}
+            onChange={e => set("travelers", e.target.value)}
+            className={`${inlineInput} w-12 text-center`}
+          />
+          <span>of us traveling.</span>
+        </p>
 
-            {/* Days + Travelers */}
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className={labelClass}>Days</label>
-                <div className="relative">
-                  <Calendar className={iconClass} />
-                  <input type="number" min="1" max="30" value={form.days}
-                    onChange={(e) => update("days", e.target.value)}
-                    className={`${inputClass} pl-10`} />
-                </div>
-              </div>
-              <div>
-                <label className={labelClass}>Travelers</label>
-                <div className="relative">
-                  <Users className={iconClass} />
-                  <input type="number" min="1" max="20" value={form.travelers}
-                    onChange={(e) => update("travelers", e.target.value)}
-                    className={`${inputClass} pl-10`} />
-                </div>
-              </div>
-            </div>
+        {/* Line 3 */}
+        <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+          <span>We want a</span>
+          <select
+            value={form.tripType}
+            onChange={e => set("tripType", e.target.value)}
+            className={`${inlineSelect} w-auto`}
+          >
+            {tripTypes.map(t => (
+              <option key={t} value={t} className="bg-[#111] text-white">
+                {t.charAt(0).toUpperCase() + t.slice(1)}
+              </option>
+            ))}
+          </select>
+          <span>trip on a</span>
+          <select
+            value={form.budgetStyle}
+            onChange={e => set("budgetStyle", e.target.value)}
+            className={`${inlineSelect} w-auto`}
+          >
+            {budgetStyles.map(b => (
+              <option key={b} value={b} className="bg-[#111] text-white">
+                {b.charAt(0).toUpperCase() + b.slice(1)}
+              </option>
+            ))}
+          </select>
+          <span>budget.</span>
+        </p>
 
-            {/* Traveling from */}
-            <div>
-              <label className={labelClass}>Traveling from</label>
-              <div className="relative">
-                <Plane className={iconClass} />
-                <PlacesAutocomplete
-                  value={form.travelFrom}
-                  onChange={(v) => update("travelFrom", v)}
-                  placeholder="Delhi, Mumbai, Bangalore…"
-                  className={`${inputClass} pl-10`}
-                  types={["(cities)"]}
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Trip type */}
-            <div>
-              <label className={labelClass}>Trip type</label>
-              <div className="relative">
-                <Tag className={iconClass} />
-                <select value={form.tripType} onChange={(e) => update("tripType", e.target.value)}
-                  className={`${selectClass} pl-10`}>
-                  {tripTypes.map((t) => (
-                    <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Currency + Budget */}
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className={labelClass}>Currency</label>
-                <div className="relative">
-                  <DollarSign className={iconClass} />
-                  <select value={form.currency} onChange={(e) => update("currency", e.target.value)}
-                    className={`${selectClass} pl-10`}>
-                    {currencies.map((c) => <option key={c} value={c}>{c}</option>)}
-                  </select>
-                </div>
-              </div>
-              <div>
-                <label className={labelClass}>Budget style</label>
-                <select value={form.budgetStyle} onChange={(e) => update("budgetStyle", e.target.value)}
-                  className={selectClass}>
-                  {budgetStyles.map((b) => (
-                    <option key={b} value={b}>{b.charAt(0).toUpperCase() + b.slice(1)}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Submit */}
-            <motion.button
-              type="submit"
-              disabled={loading}
-              whileHover={{ scale: loading ? 1 : 1.01 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-[#2563EB] to-[#7C3AED] text-white text-sm font-bold rounded-xl shadow-[0_4px_20px_rgba(37,99,235,0.4)] hover:shadow-[0_6px_28px_rgba(37,99,235,0.5)] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed mt-2"
-            >
-              {loading ? (
-                <><Loader2 className="w-4 h-4 animate-spin" />Generating your plan…</>
-              ) : (
-                <><Sparkles className="w-4 h-4" />Generate My Trip Plan</>
-              )}
-            </motion.button>
-          </form>
-        </div>
+        {/* Line 4 */}
+        <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+          <span>We are</span>
+          <input
+            type="text"
+            value={form.nationality}
+            onChange={e => set("nationality", e.target.value)}
+            placeholder="Indian"
+            className={`${inlineInput} w-[90px]`}
+          />
+          <span>travelers paying in</span>
+          <select
+            value={form.currency}
+            onChange={e => set("currency", e.target.value)}
+            className={`${inlineSelect} w-auto`}
+          >
+            {currencies.map(c => (
+              <option key={c.value} value={c.value} className="bg-[#111] text-white">
+                {c.label}
+              </option>
+            ))}
+          </select>
+          <span>.</span>
+        </p>
       </div>
-    </motion.div>
+
+      {/* Submit */}
+      <motion.button
+        type="submit"
+        disabled={loading}
+        whileHover={{ scale: loading ? 1 : 1.015 }}
+        whileTap={{ scale: 0.97 }}
+        className="mt-8 w-full flex items-center justify-center gap-2.5 px-6 py-4 bg-gradient-to-r from-[#2563EB] to-[#7C3AED] text-white text-sm font-bold rounded-2xl shadow-[0_4px_24px_rgba(37,99,235,0.4)] hover:shadow-[0_6px_32px_rgba(37,99,235,0.5)] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+      >
+        {loading ? (
+          <><Loader2 className="w-4 h-4 animate-spin" />Building your plan…</>
+        ) : (
+          <>Plan My Trip →</>
+        )}
+      </motion.button>
+    </form>
   );
 }
