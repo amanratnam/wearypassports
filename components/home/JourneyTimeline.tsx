@@ -1,87 +1,108 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Reveal from "@/components/Reveal";
 import { ClaySUV, ClayClimber, ClayCamp, ClayMapReader } from "@/components/clay/ClayCharacters";
+import { MapPin } from "lucide-react";
 
-if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
+/* ── Per-step animated scenes — each character acts out its step ── */
+
+function DreamScene() {
+  return (
+    <div className="relative w-44 md:w-56 mx-auto md:mx-0">
+      {/* floating idea bubble */}
+      <div className="absolute -top-2 right-2 z-10" style={{ animation: "idea-bob 3.4s ease-in-out infinite" }}>
+        <div className="relative flex items-center justify-center w-14 h-11 rounded-[50%] bg-paper shadow-soft">
+          <MapPin className="w-5 h-5 text-terracotta" />
+          <span className="absolute -bottom-1.5 left-4 w-3 h-3 rounded-full bg-paper" />
+          <span className="absolute -bottom-3 left-2.5 w-1.5 h-1.5 rounded-full bg-paper" />
+        </div>
+      </div>
+      <ClayMapReader className="a-sway-soft" />
+    </div>
+  );
+}
+
+function RouteScene() {
+  return (
+    <div className="relative w-44 md:w-56 mx-auto md:mx-0">
+      <ClaySUV style={{ animation: "car-bob 1.1s ease-in-out infinite" }} />
+      {/* road being driven, dashes stream toward the car */}
+      <svg viewBox="0 0 240 20" className="w-full -mt-1" aria-hidden>
+        <line x1="0" y1="10" x2="240" y2="10" stroke="#C56B4A" strokeWidth="3" strokeLinecap="round"
+          strokeDasharray="10 12" style={{ animation: "road-draw 0.7s linear infinite", strokeDashoffset: 44 }} />
+      </svg>
+    </div>
+  );
+}
+
+function CountScene() {
+  return (
+    <div className="relative w-44 md:w-56 mx-auto md:mx-0">
+      {/* rising rupee coins = tallying costs */}
+      {[0, 1, 2].map((i) => (
+        <span key={i}
+          className="absolute z-10 flex items-center justify-center w-7 h-7 rounded-full bg-sun text-forest-900 font-bold text-sm shadow-soft"
+          style={{ left: `${18 + i * 26}%`, top: "8%", animation: `coin-rise ${2.4 + i * 0.3}s ease-in-out infinite`, animationDelay: `${i * 0.5}s` }}>
+          ₹
+        </span>
+      ))}
+      <ClayCamp className="a-float-2" />
+    </div>
+  );
+}
+
+function GoScene() {
+  return (
+    <div className="relative w-40 md:w-52 mx-auto md:mx-0">
+      {/* summit flag waving */}
+      <div className="absolute top-0 left-[58%] z-10 origin-bottom" style={{ animation: "flag-wave 1.6s ease-in-out infinite" }}>
+        <div className="w-0.5 h-9 bg-forest-800" />
+        <div className="absolute top-0 left-0.5 w-6 h-4" style={{ background: "#C56B4A", clipPath: "polygon(0 0,100% 50%,0 100%)" }} />
+      </div>
+      <ClayClimber />
+    </div>
+  );
+}
 
 const stops = [
-  { n: "01", title: "Dream it up", body: "Tell us where your mind keeps wandering. A city, a season, a feeling. No wrong answers.", Char: ClayMapReader },
-  { n: "02", title: "Draw the route", body: "We sketch a day-by-day path — the detours, the slow mornings, the roads worth the extra hour.", Char: ClaySUV },
-  { n: "03", title: "Count it honestly", body: "Real numbers in real rupees. Flights, beds, food, and the little things nobody warns you about.", Char: ClayCamp },
-  { n: "04", title: "Go get lost", body: "Print it, pocket it, and let the plan bend. The best pages of the journal are written on the road.", Char: ClayClimber },
+  { n: "01", title: "Dream it up", body: "Tell us where your mind keeps wandering. A city, a season, a feeling. No wrong answers.", Scene: DreamScene },
+  { n: "02", title: "Draw the route", body: "We sketch a day-by-day path — the detours, the slow mornings, the roads worth the extra hour.", Scene: RouteScene },
+  { n: "03", title: "Count it honestly", body: "Real numbers in real rupees. Flights, beds, food, and the little things nobody warns you about.", Scene: CountScene },
+  { n: "04", title: "Go get lost", body: "Print it, pocket it, and let the plan bend. The best pages of the journal are written on the road.", Scene: GoScene },
 ];
 
 export default function JourneyTimeline() {
-  const root = useRef<HTMLDivElement>(null);
-  const path = useRef<SVGPathElement>(null);
-
-  useEffect(() => {
-    const el = root.current;
-    const p = path.current;
-    if (!el || !p) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      p.style.strokeDashoffset = "0";
-      return;
-    }
-    const len = p.getTotalLength();
-    p.style.strokeDasharray = `${len}`;
-    p.style.strokeDashoffset = `${len}`;
-    const ctx = gsap.context(() => {
-      gsap.to(p, {
-        strokeDashoffset: 0,
-        ease: "none",
-        scrollTrigger: { trigger: el, start: "top 70%", end: "bottom 80%", scrub: 0.6 },
-      });
-    }, el);
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section className="section relative overflow-hidden paper-texture topo-texture">
+    <section className="relative overflow-hidden paper-texture topo-texture" style={{ paddingBlock: "clamp(3.5rem,7vw,6rem)", paddingInline: "clamp(1.25rem,4vw,3rem)" }}>
       <div className="wrap relative">
-        <Reveal className="text-center max-w-2xl mx-auto mb-16">
-          <p className="eyebrow mb-5">Chapter two · The journey</p>
+        <Reveal className="text-center max-w-2xl mx-auto mb-12">
+          <p className="eyebrow mb-4">Chapter two · The journey</p>
           <h2 className="d-1 text-ink">Four steps from<br /><span className="italic-serif text-forest-800">itch to itinerary.</span></h2>
         </Reveal>
 
-        <div ref={root} className="relative">
-          {/* the drawn map path (desktop) */}
-          <svg
-            className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-40 hidden md:block pointer-events-none"
-            viewBox="0 0 160 900" preserveAspectRatio="none" fill="none" aria-hidden
-          >
-            <path
-              ref={path}
-              d="M80 10 C 20 130, 140 200, 80 320 S 20 500, 80 610 S 140 780, 80 890"
-              stroke="#C56B4A" strokeWidth="3" strokeLinecap="round" strokeDasharray="1 9"
-            />
+        <div className="relative">
+          {/* dotted route connecting the steps (desktop) */}
+          <svg className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-28 hidden md:block pointer-events-none" viewBox="0 0 120 900" preserveAspectRatio="none" fill="none" aria-hidden>
+            <path d="M60 10 C 10 130, 110 200, 60 320 S 10 500, 60 610 S 110 780, 60 890"
+              stroke="#C56B4A" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="1 10" opacity="0.55" />
           </svg>
 
-          <div className="space-y-14 md:space-y-24">
+          <div className="space-y-12 md:space-y-20">
             {stops.map((s, i) => {
               const left = i % 2 === 0;
               return (
                 <Reveal key={s.n} className="relative md:grid md:grid-cols-2 md:gap-16 items-center">
-                  {/* text */}
                   <div className={`${left ? "md:order-1 md:text-right" : "md:order-2"}`}>
-                    <div className={`flex items-center gap-3 mb-3 ${left ? "md:justify-end" : ""}`}>
-                      <span className="font-serif text-5xl text-forest-300">{s.n}</span>
+                    <div className={`flex items-center gap-3 mb-2.5 ${left ? "md:justify-end" : ""}`}>
+                      <span className="font-serif text-4xl text-forest-300">{s.n}</span>
                       <span className="chip">Step {s.n}</span>
                     </div>
-                    <h3 className="d-3 text-ink mb-3">{s.title}</h3>
+                    <h3 className="d-3 text-ink mb-2.5">{s.title}</h3>
                     <p className="body text-text-2 max-w-sm md:inline-block">{s.body}</p>
                   </div>
-                  {/* clay character */}
-                  <div className={`${left ? "md:order-2" : "md:order-1 md:flex md:justify-end"} mt-6 md:mt-0`}>
-                    <div className="w-44 md:w-56 mx-auto md:mx-0 a-float" style={{ animationDelay: `${i * 0.4}s` }}>
-                      <s.Char />
-                    </div>
+                  <div className={`${left ? "md:order-2" : "md:order-1 md:flex md:justify-end"} mt-5 md:mt-0`}>
+                    <s.Scene />
                   </div>
-                  {/* node dot */}
                   <span className="hidden md:block absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-sun ring-4 ring-paper" />
                 </Reveal>
               );
