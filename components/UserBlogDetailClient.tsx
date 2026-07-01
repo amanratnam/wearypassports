@@ -8,13 +8,13 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { getUserPost, UserBlogPost } from "@/lib/blogStore";
-import { ArrowLeft, Clock, Calendar, Sparkles } from "lucide-react";
+import { ArrowLeft, Clock, Calendar, Compass } from "lucide-react";
 
 function fmt(t: string): string {
   return t
-    .replace(/\*\*(.+?)\*\*/g, '<strong style="color:white;font-weight:700">$1</strong>')
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\*(.+?)\*/g, "<em>$1</em>")
-    .replace(/`(.+?)`/g, '<code style="background:rgba(255,255,255,0.07);padding:2px 6px;border-radius:4px;font-size:0.85em">$1</code>');
+    .replace(/`(.+?)`/g, '<code style="background:var(--paper-deep);padding:2px 6px;border-radius:6px;font-size:0.85em">$1</code>');
 }
 
 function renderTable(lines: string[], key: number) {
@@ -23,20 +23,10 @@ function renderTable(lines: string[], key: number) {
   const headers = rows[0].split("|").map((h) => h.trim()).filter(Boolean);
   const dataRows = rows.slice(1).map((r) => r.split("|").map((c) => c.trim()).filter(Boolean));
   return (
-    <div key={key} className="overflow-x-auto my-6 rounded-xl border border-white/8">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="bg-white/3 border-b border-white/8">
-            {headers.map((h, i) => <th key={i} className="px-4 py-3 text-left font-semibold text-white whitespace-nowrap">{h}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-          {dataRows.map((row, ri) => (
-            <tr key={ri} className="border-b border-white/5 hover:bg-white/2 transition-colors">
-              {row.map((cell, ci) => <td key={ci} className="px-4 py-3 text-white/50" dangerouslySetInnerHTML={{ __html: fmt(cell) }} />)}
-            </tr>
-          ))}
-        </tbody>
+    <div key={key} className="overflow-x-auto">
+      <table>
+        <thead><tr>{headers.map((h, i) => <th key={i}>{h}</th>)}</tr></thead>
+        <tbody>{dataRows.map((row, ri) => <tr key={ri}>{row.map((cell, ci) => <td key={ci} dangerouslySetInnerHTML={{ __html: fmt(cell) }} />)}</tr>)}</tbody>
       </table>
     </div>
   );
@@ -51,100 +41,51 @@ function renderContent(content: string): React.ReactNode[] {
 
   while (i < lines.length) {
     const line = lines[i].trim();
-
     if (line === "") {
-      if (inTable && tableLines.length > 0) {
-        elements.push(renderTable(tableLines, elements.length));
-        tableLines = [];
-        inTable = false;
-      }
-      i++;
-      continue;
+      if (inTable && tableLines.length > 0) { elements.push(renderTable(tableLines, elements.length)); tableLines = []; inTable = false; }
+      i++; continue;
     }
-
-    if (line.startsWith("|")) {
-      inTable = true;
-      tableLines.push(line);
-      i++;
-      continue;
-    }
-
-    if (inTable && tableLines.length > 0) {
-      elements.push(renderTable(tableLines, elements.length));
-      tableLines = [];
-      inTable = false;
-    }
+    if (line.startsWith("|")) { inTable = true; tableLines.push(line); i++; continue; }
+    if (inTable && tableLines.length > 0) { elements.push(renderTable(tableLines, elements.length)); tableLines = []; inTable = false; }
 
     if (line.startsWith("## ")) {
-      elements.push(
-        <h2 key={elements.length} className="text-2xl font-black text-white mt-10 mb-4 tracking-tight">{line.slice(3)}</h2>
-      );
+      elements.push(<h2 key={elements.length}>{line.slice(3)}</h2>);
     } else if (line.startsWith("### ")) {
-      elements.push(
-        <h3 key={elements.length} className="text-lg font-bold text-white/90 mt-7 mb-3">{line.slice(4)}</h3>
-      );
+      elements.push(<h3 key={elements.length}>{line.slice(4)}</h3>);
     } else if (line.startsWith("- ") || line.startsWith("* ")) {
       const items: string[] = [];
-      while (i < lines.length && (lines[i].trim().startsWith("- ") || lines[i].trim().startsWith("* "))) {
-        items.push(lines[i].trim().slice(2));
-        i++;
-      }
-      elements.push(
-        <ul key={elements.length} className="list-disc list-inside space-y-1.5 mb-4">
-          {items.map((it, j) => (
-            <li key={j} className="text-white/55 text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: fmt(it) }} />
-          ))}
-        </ul>
-      );
+      while (i < lines.length && (lines[i].trim().startsWith("- ") || lines[i].trim().startsWith("* "))) { items.push(lines[i].trim().slice(2)); i++; }
+      elements.push(<ul key={elements.length}>{items.map((it, j) => <li key={j} dangerouslySetInnerHTML={{ __html: fmt(it) }} />)}</ul>);
       continue;
     } else if (/^\d+\.\s/.test(line)) {
       const items: string[] = [];
-      while (i < lines.length && /^\d+\.\s/.test(lines[i].trim())) {
-        items.push(lines[i].trim().replace(/^\d+\.\s/, ""));
-        i++;
-      }
-      elements.push(
-        <ol key={elements.length} className="list-decimal list-inside space-y-1.5 mb-4">
-          {items.map((it, j) => (
-            <li key={j} className="text-white/55 text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: fmt(it) }} />
-          ))}
-        </ol>
-      );
+      while (i < lines.length && /^\d+\.\s/.test(lines[i].trim())) { items.push(lines[i].trim().replace(/^\d+\.\s/, "")); i++; }
+      elements.push(<ol key={elements.length}>{items.map((it, j) => <li key={j} dangerouslySetInnerHTML={{ __html: fmt(it) }} />)}</ol>);
       continue;
     } else if (line.length > 0) {
-      elements.push(
-        <p key={elements.length} className="text-white/55 text-base leading-[1.85] mb-4"
-          dangerouslySetInnerHTML={{ __html: fmt(line) }} />
-      );
+      elements.push(<p key={elements.length} dangerouslySetInnerHTML={{ __html: fmt(line) }} />);
     }
     i++;
   }
-
   if (inTable && tableLines.length > 0) elements.push(renderTable(tableLines, elements.length));
   return elements;
 }
 
-interface Props {
-  slug: string;
-}
+interface Props { slug: string; }
 
 export default function UserBlogDetailClient({ slug }: Props) {
   const router = useRouter();
   const [post, setPost] = useState<UserBlogPost | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const found = getUserPost(slug);
-    setPost(found);
-    setLoading(false);
-  }, [slug]);
+  useEffect(() => { setPost(getUserPost(slug)); setLoading(false); }, [slug]);
 
   if (loading) {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen bg-[#080808] pt-16 flex items-center justify-center">
-          <div className="w-6 h-6 border-2 border-white/20 border-t-white/60 rounded-full animate-spin" />
+        <main className="min-h-screen paper-texture pt-[68px] flex items-center justify-center">
+          <div className="w-6 h-6 border-2 border-forest-800/30 border-t-forest-800 rounded-full animate-spin" />
         </main>
       </>
     );
@@ -154,21 +95,12 @@ export default function UserBlogDetailClient({ slug }: Props) {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen bg-[#080808] pt-16 flex items-center justify-center px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center max-w-sm"
-          >
-            <p className="text-5xl mb-6">🧳</p>
-            <h1 className="text-2xl font-black text-white mb-3">Story not found</h1>
-            <p className="text-white/40 text-base mb-8">
-              This story doesn't exist or may have been removed.
-            </p>
-            <Link href="/blog" className="btn-gradient inline-flex">
-              Back to all stories
-            </Link>
+        <main className="min-h-screen paper-texture pt-[68px] flex items-center justify-center px-4">
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-center max-w-sm">
+            <p className="text-5xl mb-6">🧭</p>
+            <h1 className="font-serif text-3xl text-ink mb-3">Note not found</h1>
+            <p className="body text-text-2 mb-8">This page doesn&apos;t exist, or has drifted off the map.</p>
+            <Link href="/blog" className="btn-forest inline-flex">Back to all notes</Link>
           </motion.div>
         </main>
         <Footer />
@@ -179,94 +111,59 @@ export default function UserBlogDetailClient({ slug }: Props) {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-[#080808] pt-16">
-        {/* Cover — gradient fallback if no image */}
-        <div className="relative h-72 sm:h-[380px] overflow-hidden">
+      <main className="min-h-screen paper-texture pt-[68px]">
+        <div className="relative h-72 sm:h-[420px] overflow-hidden">
           {post.coverImage ? (
-            <Image
-              src={post.coverImage}
-              alt={post.title}
-              fill
-              priority
-              className="object-cover"
-              sizes="100vw"
-            />
+            <Image src={post.coverImage} alt={post.title} fill priority className="object-cover" sizes="100vw" />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-[#0f1a2e] via-[#1a0a2e] to-[#080808]" />
+            <div className="absolute inset-0" style={{ background: "linear-gradient(135deg,#335C45,#12281C)" }} />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-black/50 to-black/10" />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(18,40,28,0.1), rgba(18,40,28,0.75))" }} />
           <div className="absolute inset-0 flex items-end">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 w-full">
-              <span className="badge-accent text-xs font-bold mb-4 inline-flex">{post.category}</span>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight max-w-2xl">
-                {post.title}
-              </h1>
+            <div className="wrap pb-10 w-full">
+              <span className="chip !bg-paper/90 mb-4 inline-flex">{post.category}</span>
+              <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-paper leading-tight max-w-3xl">{post.title}</h1>
             </div>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="wrap-wide section !py-14">
           <div className="grid lg:grid-cols-3 gap-12">
-            {/* Article */}
             <article className="lg:col-span-2">
-              {/* Meta */}
-              <div className="flex flex-wrap items-center gap-4 text-sm text-white/30 mb-10 pb-8 border-b border-white/8">
-                <Link href="/blog" className="flex items-center gap-1.5 text-[#60A5FA] hover:text-[#93C5FD] transition-colors font-semibold">
-                  <ArrowLeft className="w-3.5 h-3.5" /> All Stories
+              <div className="flex flex-wrap items-center gap-5 text-sm text-text-3 mb-10 pb-8 border-b border-[color:var(--line)]">
+                <Link href="/blog" className="flex items-center gap-1.5 text-forest-700 hover:text-forest-800 transition-colors font-semibold">
+                  <ArrowLeft className="w-3.5 h-3.5" /> All Field Notes
                 </Link>
-                <span className="flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5" />
-                  {new Date(post.publishedAt).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}
-                </span>
-                {post.readTime && (
-                  <span className="flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5" />{post.readTime}
-                  </span>
-                )}
-                <span className="ml-auto px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#60A5FA]/10 text-[#60A5FA] border border-[#60A5FA]/20">
-                  Community story
-                </span>
+                <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />
+                  {new Date(post.publishedAt).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}</span>
+                {post.readTime && <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{post.readTime}</span>}
+                <span className="ml-auto chip">Community note</span>
               </div>
 
-              <div>{renderContent(post.content)}</div>
+              <div className="prose-journal">{renderContent(post.content)}</div>
 
-              {/* Inline CTA */}
-              <div className="mt-12 p-7 rounded-3xl bg-gradient-to-br from-[#2563EB]/10 to-[#7C3AED]/10 border border-[#2563EB]/15">
+              <div className="mt-12 rounded-4xl p-7 text-paper" style={{ background: "linear-gradient(135deg,#1F4D36,#12281C)" }}>
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#2563EB] to-[#7C3AED] flex items-center justify-center flex-shrink-0">
-                    <Sparkles className="w-5 h-5 text-white" />
-                  </div>
+                  <span className="w-11 h-11 rounded-2xl bg-sun flex items-center justify-center flex-shrink-0"><Compass className="w-5 h-5 text-forest-900" /></span>
                   <div>
-                    <h3 className="font-bold text-white text-base mb-2">Ready to plan this trip?</h3>
-                    <p className="text-white/40 text-sm mb-4 leading-relaxed">
-                      Use the AI planner to get a personalised itinerary and budget breakdown — free, instant, no signup.
+                    <h3 className="font-serif text-xl text-paper mb-2">Ready to draw this route?</h3>
+                    <p className="text-sm mb-4 leading-relaxed" style={{ color: "rgba(250,249,245,0.7)" }}>
+                      Open the planner for a day-by-day itinerary and honest budget — free, instant, no signup.
                     </p>
-                    <Link href="/planner" className="btn-gradient inline-flex">
-                      <Sparkles className="w-4 h-4" /> Plan This Trip
-                    </Link>
+                    <Link href="/planner" className="btn-sun !py-2.5 !px-5 !text-sm">Plan This Trip</Link>
                   </div>
                 </div>
               </div>
             </article>
 
-            {/* Sidebar */}
             <aside>
-              <div className="card-dark sticky top-24">
-                <h3 className="font-bold text-white text-sm mb-3">Plan Your Trip</h3>
-                <p className="text-white/40 text-sm leading-relaxed mb-5">
-                  Get a complete itinerary + budget for any destination in seconds.
-                </p>
-                <Link href="/planner" className="btn-gradient w-full justify-center flex">
-                  <Sparkles className="w-4 h-4" /> Start Planning
-                </Link>
-
-                <div className="mt-6 pt-6 border-t border-white/8">
-                  <button
-                    onClick={() => router.push("/blog")}
-                    className="w-full flex items-center gap-2 text-sm text-white/40 hover:text-white/70 transition-colors"
-                  >
-                    <ArrowLeft className="w-3.5 h-3.5" /> All stories
+              <div className="card p-6 sticky top-24 paper-deep-texture">
+                <h3 className="font-serif text-xl text-ink mb-3">Plan your own</h3>
+                <p className="body text-text-2 mb-5">A complete itinerary and budget for any destination, in seconds.</p>
+                <Link href="/planner" className="btn-forest w-full">Start Planning</Link>
+                <div className="mt-6 pt-6 border-t border-[color:var(--line-soft)]">
+                  <button onClick={() => router.push("/blog")} className="w-full flex items-center gap-2 text-sm text-text-3 hover:text-forest-800 transition-colors">
+                    <ArrowLeft className="w-3.5 h-3.5" /> All notes
                   </button>
                 </div>
               </div>

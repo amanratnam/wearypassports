@@ -23,15 +23,15 @@ interface Props {
 
 /* Shared styles for inline form elements */
 const inlineInput = `
-  bg-transparent border-b-2 border-[#2563EB]/60 text-white font-semibold
-  placeholder:text-white/25 focus:outline-none focus:border-[#60A5FA]
+  bg-transparent border-b-2 border-[color:var(--forest-500)] text-forest-800 font-semibold
+  placeholder:text-text-4 focus:outline-none focus:border-[color:var(--forest-800)]
   transition-colors duration-200 text-base leading-tight
   min-w-0 w-auto
 `.replace(/\n/g, " ").trim();
 
 const inlineSelect = `
-  bg-transparent border-b-2 border-[#2563EB]/60 text-white font-semibold
-  focus:outline-none focus:border-[#60A5FA] transition-colors duration-200
+  bg-transparent border-b-2 border-[color:var(--forest-500)] text-forest-800 font-semibold
+  focus:outline-none focus:border-[color:var(--forest-800)] transition-colors duration-200
   appearance-none cursor-pointer text-base leading-tight
   pr-4 bg-[length:10px_6px]
 `.replace(/\n/g, " ").trim();
@@ -71,7 +71,7 @@ export default function PlannerForm({ prefilledDestination = "" }: Props) {
   return (
     <form onSubmit={handleSubmit} className="w-full">
       {/* Sentences */}
-      <div className="space-y-5 text-[1.05rem] leading-[2.2] text-white/70 font-medium">
+      <div className="space-y-5 text-[1.15rem] leading-[2.2] text-text-2 font-medium">
 
         {/* Line 1 */}
         <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
@@ -124,7 +124,7 @@ export default function PlannerForm({ prefilledDestination = "" }: Props) {
             className={`${inlineSelect} w-auto`}
           >
             {tripTypes.map(t => (
-              <option key={t} value={t} className="bg-[#111] text-white">
+              <option key={t} value={t} className="bg-paper text-ink">
                 {t.charAt(0).toUpperCase() + t.slice(1)}
               </option>
             ))}
@@ -136,7 +136,7 @@ export default function PlannerForm({ prefilledDestination = "" }: Props) {
             className={`${inlineSelect} w-auto`}
           >
             {budgetStyles.map(b => (
-              <option key={b} value={b} className="bg-[#111] text-white">
+              <option key={b} value={b} className="bg-paper text-ink">
                 {b.charAt(0).toUpperCase() + b.slice(1)}
               </option>
             ))}
@@ -161,7 +161,7 @@ export default function PlannerForm({ prefilledDestination = "" }: Props) {
             className={`${inlineSelect} w-auto`}
           >
             {currencies.map(c => (
-              <option key={c.value} value={c.value} className="bg-[#111] text-white">
+              <option key={c.value} value={c.value} className="bg-paper text-ink">
                 {c.label}
               </option>
             ))}
@@ -176,12 +176,12 @@ export default function PlannerForm({ prefilledDestination = "" }: Props) {
         disabled={loading}
         whileHover={{ scale: loading ? 1 : 1.015 }}
         whileTap={{ scale: 0.97 }}
-        className="mt-8 w-full flex items-center justify-center gap-2.5 px-6 py-4 bg-gradient-to-r from-[#2563EB] to-[#7C3AED] text-white text-sm font-bold rounded-2xl shadow-[0_4px_24px_rgba(37,99,235,0.4)] hover:shadow-[0_6px_32px_rgba(37,99,235,0.5)] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+        className="btn-forest mt-8 w-full !py-4 disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {loading ? (
-          <><Loader2 className="w-4 h-4 animate-spin" />Building your plan…</>
+          <><Loader2 className="w-4 h-4 animate-spin" />Drawing your route…</>
         ) : (
-          <>Plan My Trip →</>
+          <>Draw My Journey →</>
         )}
       </motion.button>
     </form>

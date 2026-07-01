@@ -163,7 +163,7 @@ export default function PlannerCarousel() {
           >
             {/* Location pill */}
             <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 mb-4">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#6EE7B7] animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#E8B23A] animate-pulse" />
               <span className="text-xs font-bold text-white/80 tracking-wide">{slide.location}</span>
             </div>
 
