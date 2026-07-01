@@ -6,10 +6,10 @@ import ResultPageContent from "./ResultPageContent";
 export default function ResultPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA]">
+      <div className="min-h-screen flex items-center justify-center paper-texture">
         <div className="text-center">
-          <div className="w-10 h-10 border-2 border-[#2563EB] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-[#6B7280] text-sm">Loading your trip plan...</p>
+          <div className="w-10 h-10 border-2 border-forest-800 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-text-3 text-sm">Opening your journal…</p>
         </div>
       </div>
     }>

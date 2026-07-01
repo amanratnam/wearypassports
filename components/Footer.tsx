@@ -1,130 +1,99 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Compass, Mail, MapPin } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowUpRight, Mail } from "lucide-react";
+import { ClayCamp } from "@/components/clay/ClayCharacters";
+import { Fireflies, PineTree } from "@/components/clay/SceneElements";
 
 const links = {
-  Plan: [
-    { label: "Trip Planner", href: "/planner" },
-    { label: "Destinations", href: "/#destinations" },
-    { label: "Budget Tool", href: "/planner" },
+  Wander: [
+    { label: "Plan a Trip", href: "/planner" },
+    { label: "Destinations", href: "/#adventures" },
+    { label: "Journey Map", href: "/#map" },
   ],
-  Explore: [
-    { label: "Travel Stories", href: "/blog" },
-    { label: "Budget Travel", href: "/blog" },
-    { label: "Honeymoon Trips", href: "/blog" },
-    { label: "Itineraries", href: "/blog" },
+  Read: [
+    { label: "Field Notes", href: "/blog" },
+    { label: "Budget Diaries", href: "/blog" },
+    { label: "Slow Travel", href: "/blog" },
   ],
-  Company: [
+  Journal: [
     { label: "About Us", href: "/about" },
     { label: "Contact", href: "/contact" },
-    { label: "Privacy Policy", href: "#" },
-    { label: "Terms of Use", href: "#" },
+    { label: "Our Philosophy", href: "/#philosophy" },
   ],
 };
-
-const destinations = [
-  "Bali", "Ladakh", "Japan", "Santorini", "Thailand", "Maldives",
-  "Rajasthan", "Dubai", "Vietnam", "Goa", "Singapore", "Europe",
-  "Manali", "Kerala", "Spiti Valley", "Indonesia", "Paris", "Tokyo",
-];
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#050505] border-t border-white/6 overflow-hidden">
+    <footer className="relative overflow-hidden text-paper" style={{ background: "linear-gradient(180deg,#1a3326 0%,#12281C 55%,#0d1f15 100%)" }}>
+      {/* stars */}
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        {Array.from({ length: 40 }).map((_, i) => (
+          <span
+            key={i}
+            className="absolute rounded-full bg-paper a-twinkle"
+            style={{
+              left: `${(i * 61.8) % 100}%`,
+              top: `${(i * 29.3) % 55}%`,
+              width: i % 4 === 0 ? 2.5 : 1.5,
+              height: i % 4 === 0 ? 2.5 : 1.5,
+              opacity: 0.6,
+              animationDelay: `${(i % 6) * 0.5}s`,
+            }}
+          />
+        ))}
+      </div>
+      {/* moon */}
+      <div className="pointer-events-none absolute right-[8%] top-16 w-24 h-24 rounded-full a-float"
+        style={{ background: "radial-gradient(circle at 38% 32%, #FBF3D9, #E8DFB8)", boxShadow: "0 0 60px 12px rgba(244,207,116,0.25)" }} aria-hidden />
+      <Fireflies count={16} />
 
-      {/* ── CTA strip ── */}
-      <div className="relative border-b border-white/6 overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0d1a35] via-[#080808] to-[#120820] pointer-events-none" />
-        <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#2563EB]/8 blur-[80px] rounded-full pointer-events-none" />
+      {/* ── Night camp CTA ── */}
+      <div className="relative wrap pt-24 pb-16 text-center">
+        <p className="eyebrow mb-6" style={{ color: "#9DBE8F" }}>Set up camp</p>
+        <h2 className="d-1 text-paper mb-6">Where does the<br /><span className="italic-serif" style={{ color: "#E8B23A" }}>trail take you next?</span></h2>
+        <p className="body-lg mx-auto max-w-lg mb-10" style={{ color: "rgba(250,249,245,0.72)" }}>
+          Pitch the tent, open the journal, and let the next route draw itself.
+        </p>
+        <div className="flex flex-wrap justify-center gap-4">
+          <Link href="/planner" className="btn-sun">Plan the Journey <ArrowUpRight className="w-4 h-4" /></Link>
+          <Link href="/blog" className="btn-outline !text-paper !border-[rgba(250,249,245,0.3)] hover:!bg-white/5">Read the Notes</Link>
+        </div>
 
-        <div className="relative container-max py-16 sm:py-20 px-[clamp(1rem,4vw,4rem)]">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-            <div>
-              <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-white/30 mb-3">
-                Ready to go?
-              </p>
-              <h2 className="fluid-h1 font-black text-white leading-[0.95] tracking-[-0.03em]">
-                Where to next?
-              </h2>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Link
-                  href="/planner"
-                  className="inline-flex items-center gap-2.5 px-7 py-3.5 bg-white text-black font-bold text-sm rounded-2xl hover:bg-white/92 transition-all duration-200 shadow-[0_0_40px_rgba(255,255,255,0.1)]"
-                >
-                  Plan My Trip
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </motion.div>
-              <Link
-                href="/blog"
-                className="inline-flex items-center gap-2 px-7 py-3.5 border border-white/15 text-white/70 font-semibold text-sm rounded-2xl hover:border-white/30 hover:text-white transition-all duration-200"
-              >
-                Read Stories
-              </Link>
-            </div>
-          </div>
+        {/* clay camp on a ridge */}
+        <div className="relative mt-14 flex items-end justify-center gap-6">
+          <PineTree className="w-10 opacity-80" />
+          <ClayCamp className="w-64 max-w-[70vw]" />
+          <PineTree className="w-14 opacity-90" />
         </div>
       </div>
 
-      {/* ── Destinations marquee ── */}
-      <div className="border-b border-white/6 py-3 overflow-hidden bg-[#080808]/50">
-        <div className="flex whitespace-nowrap animate-marquee-slow">
-          {[...destinations, ...destinations].map((d, i) => (
-            <span key={i} className="inline-flex items-center gap-3 px-4 text-[10px] font-bold tracking-[0.18em] uppercase text-white/20">
-              <MapPin className="w-2.5 h-2.5 flex-shrink-0" />
-              {d}
-            </span>
-          ))}
-        </div>
-      </div>
+      {/* ridge line */}
+      <div className="relative h-px" style={{ background: "rgba(250,249,245,0.12)" }} />
 
-      {/* ── Main footer grid ── */}
-      <div className="container-max px-[clamp(1rem,4vw,4rem)] pt-14 pb-10">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-16 mb-12">
-
-          {/* Brand */}
-          <div className="col-span-2 lg:col-span-1">
-            <Link href="/" className="inline-flex items-center gap-2.5 mb-5 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#2563EB] to-[#7C3AED] flex items-center justify-center transition-transform duration-200 group-hover:scale-105 shadow-[0_0_20px_rgba(37,99,235,0.3)]">
-                <Compass className="w-4.5 h-4.5 text-white" />
-              </div>
-              <div>
-                <span className="font-black text-white text-base tracking-tight block leading-none">Weary Passports</span>
-                <span className="text-[9px] font-medium tracking-[0.15em] uppercase text-white/30">Plan smarter</span>
-              </div>
-            </Link>
-            <p className="text-white/40 text-sm leading-relaxed max-w-[220px] mb-5">
-              Personalised trip planning for Indian explorers. Real budgets. Real routes. Done in seconds.
+      {/* ── link grid ── */}
+      <div className="relative wrap py-14">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
+          <div className="col-span-2 md:col-span-1">
+            <span className="font-serif text-2xl font-semibold text-paper">Weary Passports</span>
+            <p className="mt-3 text-sm leading-relaxed max-w-[220px]" style={{ color: "rgba(250,249,245,0.6)" }}>
+              A field journal for curious travellers. Slow routes, honest budgets, hand-drawn maps.
             </p>
-            <a
-              href="mailto:aman@wearypassports.com"
-              className="inline-flex items-center gap-2 text-xs text-white/35 hover:text-white/70 transition-colors"
-            >
-              <Mail className="w-3.5 h-3.5" />
-              aman@wearypassports.com
+            <a href="mailto:aman@wearypassports.com"
+              className="mt-5 inline-flex items-center gap-2 text-sm hover:text-sun transition-colors" style={{ color: "rgba(250,249,245,0.72)" }}>
+              <Mail className="w-4 h-4" /> aman@wearypassports.com
             </a>
           </div>
 
-          {/* Nav columns */}
-          {Object.entries(links).map(([category, items]) => (
-            <div key={category}>
-              <h4 className="text-[9px] font-bold tracking-[0.22em] uppercase text-white/35 mb-4">
-                {category}
-              </h4>
+          {Object.entries(links).map(([cat, items]) => (
+            <div key={cat}>
+              <h4 className="text-[0.7rem] font-bold tracking-[0.28em] uppercase mb-4" style={{ color: "#9DBE8F" }}>{cat}</h4>
               <ul className="space-y-3">
                 {items.map(({ label, href }) => (
                   <li key={label}>
-                    <Link
-                      href={href}
-                      className="text-sm text-white/50 hover:text-white transition-colors duration-200 hover:translate-x-0.5 inline-block"
-                    >
+                    <Link href={href} className="text-sm transition-colors hover:text-sun" style={{ color: "rgba(250,249,245,0.68)" }}>
                       {label}
                     </Link>
                   </li>
@@ -134,37 +103,15 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* ── Bottom bar ── */}
-        <div className="pt-6 border-t border-white/6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <p className="text-xs text-white/30">
-            © {year} Weary Passports. All rights reserved.
-          </p>
-
-          {/* Tagline stamp */}
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/8 bg-white/3">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#34D399] animate-pulse" />
-            <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-white/40">
-              Built for travelers who plan smarter
+        <div className="mt-14 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
+          style={{ borderTop: "1px solid rgba(250,249,245,0.12)" }}>
+          <p className="text-xs" style={{ color: "rgba(250,249,245,0.5)" }}>© {year} Weary Passports. Wander gently.</p>
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full" style={{ background: "rgba(250,249,245,0.06)" }}>
+            <span className="w-1.5 h-1.5 rounded-full bg-sun a-twinkle" />
+            <span className="text-[0.65rem] font-bold tracking-[0.24em] uppercase" style={{ color: "rgba(250,249,245,0.6)" }}>
+              Made for the curious
             </span>
           </div>
-        </div>
-      </div>
-
-      {/* ── Giant background wordmark ── */}
-      <div className="relative overflow-hidden h-16 sm:h-24">
-        <div
-          className="absolute inset-x-0 bottom-0 text-center select-none pointer-events-none"
-          style={{
-            fontSize: "clamp(3rem, 10vw, 10rem)",
-            fontWeight: 900,
-            letterSpacing: "-0.04em",
-            lineHeight: 0.85,
-            color: "rgba(255,255,255,0.03)",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-          }}
-        >
-          WEARY PASSPORTS
         </div>
       </div>
     </footer>
